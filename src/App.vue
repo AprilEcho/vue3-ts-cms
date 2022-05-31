@@ -13,21 +13,6 @@ export default defineComponent({
     HelloWorld
   }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <style lang="less">
