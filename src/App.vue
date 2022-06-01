@@ -4,13 +4,14 @@
     <router-link to="/login">登录</router-link>
     <router-link to="/main">首页</router-link>
     <router-view />
+    <el-button>hhh</el-button>
+    <el-input />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
-
 export default defineComponent({
   name: 'App',
   setup() {
