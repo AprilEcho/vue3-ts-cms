@@ -5,7 +5,7 @@ import routeApp from './App.vue'
 import router from './router'
 import store from './store'
 
-import './service/axios_demo'
+import hyRequest from './service'
 
 const app = createApp(routeApp)
 
@@ -16,4 +16,23 @@ app.use(router)
 app.use(store)
 app.mount('#app')
 
-console.log(process.env.VUE_APP_BASE_URL)
+interface DataType {
+  data: any
+  returnCode: string
+  success: boolean
+}
+
+hyRequest
+  .get<DataType>({
+    url: '/home/multidata',
+    // showLoading: true,
+    interceptors: {
+      requestInterceptor: (config) => {
+        console.log('单独请求的config')
+        return config
+      }
+    }
+  })
+  .then((res) => {
+    console.log(res)
+  })
