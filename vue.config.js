@@ -1,34 +1,10 @@
-// const { defineConfig } = require('@vue/cli-service')
-// module.exports = defineConfig({
-//   transpileDependencies: true
-// })
-// module.exports = {
-//   outputDir: './build',
-//   configureWebpack: {
-//     resolve: {
-//       alias: {
-//         components: '@/components'
-//       }
-//     }
-//   }
-// }
 const path = require('path')
+
 module.exports = {
-  configureWebpack: {
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
-        view: '@/view',
-        router: '@/router',
-        components: '@/components',
-        assets: '@/assets'
-      }
-    }
-  },
   devServer: {
     proxy: {
-      '/api': {
-        target: 'http://152.136.185.210:4000',
+      '^/api': {
+        target: 'http://152.136.185.210:5000',
         pathRewrite: {
           '^/api': ''
         },
@@ -36,7 +12,9 @@ module.exports = {
       }
     }
   },
-  publicPath: './', // 注意 这里使用 /  如果不行的话  就 ./
-  outputDir: 'dist', // 包名
-  assetsDir: 'static'
+  chainWebpack: (config) => {
+    config.resolve.alias
+      .set('@', path.resolve(__dirname, 'src'))
+      .set('views', '@/views')
+  }
 }
