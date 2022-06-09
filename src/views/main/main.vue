@@ -9,7 +9,9 @@
           <nav-header @foldChange="handleFoldChange"></nav-header>
         </el-header>
         <el-main class="page-content">
-          <router-view />
+          <div class="page-info">
+            <router-view />
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -18,8 +20,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import NavMenu from '@/components/nav-menu'
-import NavHeader from '@/components/nav-header'
+import NavMenu from '../../components/nav-menu'
+import NavHeader from '../../components/nav-header'
 export default defineComponent({
   components: {
     NavMenu,

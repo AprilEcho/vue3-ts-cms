@@ -30,10 +30,10 @@ const LoginModule: Module<ILoginState, IRootState> = {
     changeUserMenu(state, userMenus: any) {
       state.userMenus = userMenus
       //userMenus -> routes
-      const routes = mapMenusToRoutes(userMenus)
-      routes.forEach((route) => {
-        router.addRoute('main', route)
-      })
+      // const routes = mapMenusToRoutes(userMenus)
+      // routes.forEach((route) => {
+      //   router.addRoute('main', route)
+      // })
     }
   },
   actions: {

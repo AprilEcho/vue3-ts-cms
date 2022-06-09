@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import Localcache from '@/utils/cache'
+import Localcache from '../../../utils/cache'
 import { useStore } from 'vuex'
 
 export default defineComponent({

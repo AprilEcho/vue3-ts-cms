@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router' //导入路由类型
 import LocalCatch from '@/utils/cache'
+import { mapMenusToRoutes } from '@/utils/map-menus'
+import store from '@/store'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -14,8 +16,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/main',
     name: 'main',
-    component: () => import('@/views/main/main.vue'),
-    children: []
+    component: () => import('@/views/main/main.vue')
   },
   {
     path: '/:pathMatch(.*)*',
@@ -33,6 +34,11 @@ router.beforeEach((to) => {
     if (!token) {
       return '/login'
     }
+    const userMenus = (store.state as any).LoginModule.userMenus
+    const routes = mapMenusToRoutes(userMenus)
+    routes.forEach((route) => {
+      router.addRoute('main', route)
+    })
   }
 })
 export default router
