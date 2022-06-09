@@ -14,7 +14,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
     const route = require('../router/main' + key.split('.')[1])
     allRoutes.push(route.default)
   })
-
   // 2.根据菜单获取需要添加的routes
   const _recurseGetRoute = (menus: any[]) => {
     // 2.1 找到后台 返回该账号的权限列表
