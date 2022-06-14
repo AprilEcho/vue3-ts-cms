@@ -1,7 +1,7 @@
 <template>
   <div class="hy-form">
-    <div class="hander">
-      <slot name="hander"></slot>
+    <div class="header">
+      <slot name="header"></slot>
     </div>
     <el-form :label-width="labelWidth">
       <el-row>
@@ -21,6 +21,7 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   :show-password="item.type === 'password'"
+                  v-model="formData[`${item.field}`]"
                 />
               </template>
               <!-- 下拉选择框判断 -->
@@ -29,18 +30,24 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
+                  v-model="formData[`${item.field}`]"
                 >
                   <el-option
                     v-for="(option, key) in item.options"
                     :key="key"
                     :label="option.title"
                     :value="option.value"
+                    v-model="formData[`${item.field}`]"
                   ></el-option>
                 </el-select>
               </template>
               <!-- 下拉时间选择 -->
               <template v-if="item.type === 'datepicker'">
-                <el-date-picker v-bind="item.otherOptions" style="width: 100%">
+                <el-date-picker
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  v-model="formData[`${item.field}`]"
+                >
                 </el-date-picker>
               </template>
             </el-form-item>
@@ -60,10 +67,10 @@ import { IFormItem } from '../types'
 
 export default defineComponent({
   props: {
-    // modelValue: {
-    //   type: Object,
-    //   required: true
-    // },
+    modelValue: {
+      type: Object,
+      required: true
+    },
     formItems: {
       type: Array as PropType<IFormItem[]>,
       default: () => []
@@ -86,20 +93,20 @@ export default defineComponent({
         xs: 24
       })
     }
-  }
-  // setup(props, { emit }) {
-  //   const formData = ref({ ...props.modelValue })
-  //   watch(
-  //     formData,
-  //     (newValue) => {
-  //       console.log(newValue, 'newValue')
+  },
+  setup(props, { emit }) {
+    const formData = ref({ ...props.modelValue })
+    watch(
+      formData,
+      (newValue) => {
+        console.log(newValue, 'newValue')
 
-  //       emit('update:modelValue', newValue)
-  //     },
-  //     { deep: true }
-  //   )
-  //   return { formData }
-  // }
+        emit('update:modelValue', newValue)
+      },
+      { deep: true }
+    )
+    return { formData }
+  }
 })
 </script>
 
