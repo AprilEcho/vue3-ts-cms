@@ -48,7 +48,7 @@ import { defineComponent, ref, computed } from 'vue'
 import { useStore } from '../../../store'
 import { useRouter, useRoute } from 'vue-router'
 
-import { pathMapToMenu } from '@/utils/map-menus'
+import { pathMapToMenu } from '../../../utils/map-menus'
 export default defineComponent({
   props: {
     collapse: {

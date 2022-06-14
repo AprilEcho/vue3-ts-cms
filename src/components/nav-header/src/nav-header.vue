@@ -15,10 +15,10 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import UserInfo from './user-info.vue'
-import Breadcrumb from '@/base-ui/breadcrumb'
-import { pathMapBreadcrumbs } from '@/utils/map-menus'
+import Breadcrumb from '../../../base-ui/breadcrumb'
+import { pathMapBreadcrumbs } from '../../../utils/map-menus'
 import { useRoute } from 'vue-router'
-import { useStore } from '@/store'
+import { useStore } from '../../../store'
 export default defineComponent({
   components: {
     UserInfo,

@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import HyForm from '@/base-ui/form'
+import HyForm from '../../../base-ui/form'
 export default defineComponent({
   props: {
     searchFormConfig: {
