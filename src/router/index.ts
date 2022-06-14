@@ -1,17 +1,16 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router' //导入路由类型
-import LocalCatch from '@/utils/cache'
-import { mapMenusToRoutes } from '@/utils/map-menus'
-import store from '@/store'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import LocalCache from '@/utils/cache'
+import { firstMenu } from '@/utils/map-menus'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/login'
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login/login.vue')
+    component: () => import('../views/login/login.vue')
   },
   {
     path: '/main',
@@ -20,25 +19,26 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('@/views/not-found/not-found.vue')
+    component: () => import('../views/not-found/not-found.vue')
   }
 ]
+
 const router = createRouter({
   routes,
-  history: createWebHistory()
+  history: createWebHashHistory()
 })
+
 router.beforeEach((to) => {
   if (to.path !== '/login') {
-    const token = LocalCatch.getCache('token')
+    const token = LocalCache.getCache('token')
     if (!token) {
       return '/login'
     }
-    const userMenus = (store.state as any).LoginModule.userMenus
-    const routes = mapMenusToRoutes(userMenus)
-    routes.forEach((route) => {
-      router.addRoute('main', route)
-    })
+  }
+
+  if (to.path === '/main') {
+    return firstMenu.url
   }
 })
+
 export default router

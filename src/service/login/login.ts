@@ -1,26 +1,33 @@
 import hyRequest from '../index'
-import { IAccount, IDataType, ILoginResult } from './type'
-enum LoginAPI {
+import { IAccount, ILoginResult } from './type'
+import { IDataType } from '../types'
+
+enum LoginApi {
   AccountLogin = '/login',
-  LoginUserInfo = '/users/',
-  UserMenus = '/role/'
+  LoginUserInfo = '/users/', // 用法users/id
+  UserMenus = '/role/' // 用法/role/id/menu
 }
+
+// 登录获取
 export function accountLoginRequest(account: IAccount) {
   return hyRequest.post<IDataType<ILoginResult>>({
-    url: LoginAPI.AccountLogin,
+    url: LoginApi.AccountLogin,
     data: account
   })
 }
+
+// 获取用户信息
 export function requestUserInfoById(id: number) {
   return hyRequest.get<IDataType>({
-    url: LoginAPI.LoginUserInfo + id,
+    url: LoginApi.LoginUserInfo + id,
     showLoading: false
   })
 }
 
-export function requestUserMenus(id: number) {
+// 获取用户菜单
+export function requestUserMenusByRoleId(id: number) {
   return hyRequest.get<IDataType>({
-    url: LoginAPI.UserMenus + id + '/menu',
+    url: LoginApi.UserMenus + id + '/menu',
     showLoading: false
   })
 }

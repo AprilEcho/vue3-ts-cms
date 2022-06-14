@@ -1,79 +1,93 @@
 import { Module } from 'vuex'
-import { ILoginState } from './type'
+
 import { IRootState } from '../type'
+import { ILoginState } from './type'
+import { IAccount } from '@/service/login/type'
 import {
   accountLoginRequest,
   requestUserInfoById,
-  requestUserMenus
-} from '@/service/login/login'
-import { IAccount } from '@/service/login/type'
+  requestUserMenusByRoleId
+} from '../../service/login/login'
 import LocalCache from '@/utils/cache'
 import router from '@/router'
-import { mapMenusToRoutes } from '@/utils/map-menus'
-const LoginModule: Module<ILoginState, IRootState> = {
+
+import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/map-menus'
+
+const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     }
   },
   getters: {},
   mutations: {
-    changeToken(state, token: string) {
-      state.token = token
+    changeToken(state, payload: string) {
+      state.token = payload
     },
-    changeUserInfo(state, userInfo: any) {
-      state.userInfo = userInfo
+    changeUserInfo(state, payload: any) {
+      state.userInfo = payload
     },
-    changeUserMenu(state, userMenus: any) {
-      state.userMenus = userMenus
-      //userMenus -> routes
-      // const routes = mapMenusToRoutes(userMenus)
-      // routes.forEach((route) => {
-      //   router.addRoute('main', route)
-      // })
+    changeUserMenus(state, payload: any) {
+      state.userMenus = payload
+
+      // 动态添加路由
+      const routes = mapMenusToRoutes(payload)
+
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
+
+      const permissions = mapMenusToPermissions(payload)
+
+      state.permissions = permissions
     }
   },
   actions: {
-    async accountLoginAction({ commit }, payload: IAccount) {
-      //登陆
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
+      // 1.登录逻辑
       const loginResult = await accountLoginRequest(payload)
       const { id, token } = loginResult.data
       commit('changeToken', token)
       LocalCache.setCache('token', token)
-      //获取用户信息
+
+      // dispatch('getInitialDataAction', null, { root: true })
+
+      // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
-      const userInfo = userInfoResult.data
-      commit('changeUserInfo', userInfo)
-      LocalCache.setCache('userInfo', userInfo)
-      //获取用户菜单
-      const userMenusResult = await requestUserMenus(userInfo.role.id)
+      const userinfo = userInfoResult.data
+      commit('changeUserInfo', userinfo)
+      LocalCache.setCache('userinfo', userinfo)
+
+      // 请求用户菜单
+      const userMenusResult = await requestUserMenusByRoleId(userinfo.role.id)
       const userMenus = userMenusResult.data
-      commit('changeUserMenu', userMenus)
+      commit('changeUserMenus', userMenus)
       LocalCache.setCache('userMenus', userMenus)
+
+      console.log(router.getRoutes())
 
       router.push('/main')
     },
-    //刷新之后防止vuex数据失效
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = LocalCache.getCache('token')
       if (token) {
         commit('changeToken', token)
+        // dispatch('getInitialDataAction', null, { root: true })
       }
-      const userInfo = LocalCache.getCache('userInfo')
-      if (userInfo) {
-        commit('changeUserInfo', userInfo)
+      const userinfo = LocalCache.getCache('userinfo')
+      if (userinfo) {
+        commit('changeUserInfo', userinfo)
       }
       const userMenus = LocalCache.getCache('userMenus')
       if (userMenus) {
-        commit('changeUserMenu', userMenus)
+        commit('changeUserMenus', userMenus)
       }
-    },
-    phoneLoginAction({ commit }, payload: IAccount) {
-      console.log('执行action', payload)
     }
   }
 }
-export default LoginModule
+
+export default loginModule
