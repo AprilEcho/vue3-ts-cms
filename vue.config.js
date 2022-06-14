@@ -9,7 +9,7 @@ module.exports = {
           '^/api': ''
         },
         changeOrigin: true,
-        logLevel: "debug"
+        logLevel: 'debug'
       }
     }
   },
