@@ -9,6 +9,9 @@
         :showSelectColumn="showSelectColumn"
         :title="title"
       >
+        <template #headerHandler>
+          <el-button type="primary" size="medium">新建用户</el-button>
+        </template>
         <template #status="scope">
           <el-button
             size="mini"

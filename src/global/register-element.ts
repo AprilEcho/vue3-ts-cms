@@ -23,6 +23,7 @@ import {
   ElMenuItem,
   ElMenuItemGroup,
   ElOption,
+  ElPagination,
   ElRadio,
   ElRow,
   ElSelect,
@@ -63,7 +64,8 @@ const components = [
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElTable,
-  ElTableColumn
+  ElTableColumn,
+  ElPagination
 ]
 
 export default function (app: App): void {
