@@ -2,15 +2,36 @@
   <div class="user">
     <page-search :searchFormConfig="searchFormConfig" />
     <div class="content">
-      <hy-table :listData="userList" :propList="propList">
+      <hy-table
+        :listData="userList"
+        :propList="propList"
+        :showIndexColumn="showIndexColumn"
+        :showSelectColumn="showSelectColumn"
+        :title="title"
+      >
         <template #status="scope">
-          <el-button>{{ scope.row.enable ? '启用' : '禁用' }}</el-button>
+          <el-button
+            size="mini"
+            :type="scope.row.enable ? 'success' : 'danger'"
+          >
+            {{ scope.row.enable ? '启用' : '禁用' }}
+          </el-button>
         </template>
         <template #createAt="scope">
-          <strong>{{ scope.row.createAt }}</strong>
+          <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
         </template>
         <template #updateAt="scope">
-          <strong>{{ scope.row.updateAt }}</strong>
+          <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
+        </template>
+        <template #handler>
+          <div class="handle-btns">
+            <el-button icon="el-icon-edit" size="mini" type="text"
+              >编辑</el-button
+            >
+            <el-button icon="el-icon-delete" size="mini" type="text"
+              >删除</el-button
+            >
+          </div>
         </template>
       </hy-table>
     </div>
@@ -39,6 +60,9 @@ export default defineComponent({
       }
     })
     const userList = computed(() => store.state.system.usersList)
+
+    const title = '用户列表'
+
     const userCount = computed(() => store.state.system.usersCount)
 
     const propList = [
@@ -57,10 +81,21 @@ export default defineComponent({
         label: '更新时间',
         minWidth: '250',
         slotName: 'updateAt'
-      }
+      },
+      { label: '操作', minWidth: '120', slotName: 'handler' }
     ]
 
-    return { searchFormConfig, userList, propList }
+    const showIndexColumn = true
+    const showSelectColumn = true
+
+    return {
+      searchFormConfig,
+      userList,
+      propList,
+      showIndexColumn,
+      showSelectColumn,
+      title
+    }
   }
 })
 </script>

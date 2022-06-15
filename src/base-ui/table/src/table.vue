@@ -15,14 +15,14 @@
       v-bind="childrenProps"
     >
       <el-table-column
-        v-if="showIndexColumn"
+        v-if="showSelectColumn"
         type="selection"
         width="55"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        v-if="showSelectColumn"
+        v-if="showIndexColumn"
         type="index"
         label="序号"
         width="55"
