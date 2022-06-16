@@ -20,6 +20,8 @@ const systemModule: Module<ISystemState, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, playload: any) {
+      const pageName = playload.pageName
+      const pageUrl = `${pageName}/list`
       const pageResult = await getPageListData(playload.url, playload.queryInfo)
       const { list, totalCount } = pageResult.data
       commit('changeUserList', list)
