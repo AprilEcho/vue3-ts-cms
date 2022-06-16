@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <hy-table :listData="userList" v-bind="contentTableConfig">
+    <hy-table :listData="dataList" v-bind="contentTableConfig">
       <template #headerHandler>
         <el-button type="primary" size="medium">新建用户</el-button>
       </template>
@@ -32,7 +32,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import hyTable from '@/base-ui/table'
+import hyTable from '../../../base-ui/table'
 export default defineComponent({
   components: {
     hyTable
@@ -56,10 +56,11 @@ export default defineComponent({
         size: 10
       }
     })
-    const userList = computed(() => store.state.system.usersList)
-
+    const dataList = computed(() =>
+      store.getters[`system/pageListData`](props.pageName)
+    )
     const userCount = computed(() => store.state.system.usersCount)
-    return { userList }
+    return { dataList }
   }
 })
 </script>
