@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { IFormItem } from '../types'
 
 export default defineComponent({
@@ -96,6 +96,14 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const formData = ref({ ...props.modelValue })
+
+    // watch(
+    //   () => props.modelValue,
+    //   (newValue) => {
+    //     formData.value = { ...newValue }
+    //   }
+    // )
+
     watch(
       formData,
       (newValue) => {

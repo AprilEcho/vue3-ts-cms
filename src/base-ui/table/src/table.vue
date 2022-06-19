@@ -109,7 +109,6 @@ export default defineComponent({
       emit('update:page', { ...props.page, currentPage })
     }
     const handleSizeChange = (pageSize: number) => {
-      console.log(222)
       emit('update:page', { ...props.page, pageSize })
     }
     return {
