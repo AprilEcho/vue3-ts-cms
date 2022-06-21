@@ -1,7 +1,7 @@
 import { Module } from 'vuex'
 import { ISystemState } from './type'
 import { IRootState } from '@/store/type'
-import { getPageListData } from '@/service/main/system/system'
+import { getPageListData, deletePageData } from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -75,6 +75,23 @@ const systemModule: Module<ISystemState, IRootState> = {
         )}Count`,
         totalCount
       )
+    },
+    async deletePageDataAction({ dispatch }, payload) {
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      console.log(pageUrl)
+
+      // 删除请求
+      await deletePageData(pageUrl)
+
+      // 删除后重新请求数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   }
 }
