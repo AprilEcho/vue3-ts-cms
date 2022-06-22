@@ -7,7 +7,11 @@
       v-model:page="pageInfo"
     >
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="medium"
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="medium"
+          @click="handleNewClick"
           >新建用户</el-button
         >
       </template>
@@ -24,7 +28,12 @@
       </template>
       <template #handler="scope">
         <div class="handle-btns">
-          <el-button v-if="isUpdate" icon="el-icon-edit" size="mini" type="text"
+          <el-button
+            v-if="isUpdate"
+            icon="el-icon-edit"
+            size="mini"
+            type="text"
+            @click="handleEditClick"
             >编辑</el-button
           >
           <el-button
@@ -69,7 +78,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['editBtnClick', 'newBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
     const isCreate = usePermission(props.pageName, 'create')
     const isUpdate = usePermission(props.pageName, 'update')
@@ -117,6 +127,14 @@ export default defineComponent({
       })
     }
 
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item)
+    }
+
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+
     return {
       dataList,
       getPageData,
@@ -127,7 +145,9 @@ export default defineComponent({
       isUpdate,
       isDelete,
       isQuery,
-      handleDeleteClick
+      handleDeleteClick,
+      handleEditClick,
+      handleNewClick
     }
   }
 })
