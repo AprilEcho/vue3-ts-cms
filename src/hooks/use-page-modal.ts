@@ -17,7 +17,6 @@ export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
   }
   const handleEditData = (item: any) => {
     defaultInfo.value = { ...item }
-
     if (pageModalRef.value) {
       pageModalRef.value.centerDialogVisible = true
       pageModalRef.value.title = '编辑用户'

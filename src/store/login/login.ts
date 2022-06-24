@@ -54,7 +54,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       commit('changeToken', token)
       LocalCache.setCache('token', token)
 
-      // dispatch('getInitialDataAction', null, { root: true })
+      dispatch('getInitialDataAction', null, { root: true })
 
       // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
@@ -76,7 +76,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       const token = LocalCache.getCache('token')
       if (token) {
         commit('changeToken', token)
-        // dispatch('getInitialDataAction', null, { root: true })
+        dispatch('getInitialDataAction', null, { root: true })
       }
       const userinfo = LocalCache.getCache('userinfo')
       if (userinfo) {
